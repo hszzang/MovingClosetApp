@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="130dp"
+        android:src="@drawable/movingclosetlogoblack" />
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/btnMember"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="회원"
+            android:background="@color/accentcolor"
+            android:textColor="@color/white"
+            />
+        <Button
+            android:id="@+id/btnBus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="버스"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <EditText
+            android:id="@+id/memId"
+            android:layout_width="350dp"
+            android:layout_height="80dp"
+            android:inputType="text"
+            android:hint="ID"
+            android:backgroundTint="@color/maincolor"
+            />
+        <EditText
+            android:id="@+id/memPass"
+            android:layout_width="350dp"
+            android:layout_height="80dp"
+            android:inputType="textPassword"
+            android:hint="PASSWORD"
+            android:backgroundTint="@color/maincolor"
+            />
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:text="로그인"
+            android:background="@color/accentcolor"
+            android:textColor="@color/white"
+            android:textSize="8.5pt"
+            android:layout_marginTop="30dp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
