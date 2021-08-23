@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         memId = findViewById(R.id.memId);
         memPass = findViewById(R.id.memPass);
 
-
-
         btnMember.setOnClickListener(clickGroupListener);
         btnBus.setOnClickListener(clickGroupListener);
 
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                 new AsyncHttpServer().execute(
                         //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
-                        "http://192.168.43.220:8081/movingcloset/android/AndLogin.do",
+                        "http://192.168.219.107:8081/movingcloset/android/AndLogin.do",
                                 "userid=" + memId.getText().toString(),
                                 "userpass=" + memPass.getText().toString()
                 );
