@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/maincolor</item>
         <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/accentcolor</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

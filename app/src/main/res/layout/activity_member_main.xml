@@ -43,7 +43,8 @@
             android:layout_marginBottom="40dp"
             android:backgroundTint="@color/maincolor"
             android:elevation="20dp"
-            android:src="@drawable/nowlocation" />
+            android:src="@drawable/nowlocation"
+            android:clickable="true" />
 
     </RelativeLayout>
 

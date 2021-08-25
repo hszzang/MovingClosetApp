@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                 new AsyncHttpServer().execute(
                         //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
-                        "http://192.168.219.107:8081/movingcloset/android/AndLogin.do",
+                        "http://192.168.219.116:8081/movingcloset/android/AndLogin.do",
                                 "userid=" + memId.getText().toString(),
                                 "userpass=" + memPass.getText().toString()
                 );
@@ -219,6 +219,11 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("UserInfo", memberDTO); //아이디 입력값
 
                 startActivity(intent);
+
+                memId = findViewById(R.id.memId);
+                memId.setText("");
+                memPass = findViewById(R.id.memPass);
+                memPass.setText("");
             }
             else {
                 Log.i("MemberLogin", "로그인 실패");
