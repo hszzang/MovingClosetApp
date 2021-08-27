@@ -45,7 +45,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static String IP_ADDRESS = "172.30.1.44";
+    public static String IP_ADDRESS = "192.168.35.121";
 
     Button btnMember, btnBus, btnLogin;
     EditText memId, memPass;

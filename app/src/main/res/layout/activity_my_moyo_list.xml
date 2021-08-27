@@ -5,12 +5,30 @@
     android:orientation="vertical"
     >
 
+    <TextView
+        android:id="@+id/countMyMoyo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="신청한 모여가 n개 있습니다"
+        android:gravity="right"
+        android:paddingRight="30dp"
+        android:textSize="10pt"
+        android:paddingVertical="24dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/maincolor"
+        android:alpha="0.3"
+
+        />
+
     <ListView
         android:id="@+id/moyoListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
 
     </ListView>
 

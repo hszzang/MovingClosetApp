@@ -27,10 +27,10 @@ public class MyMoyoList extends Fragment {
 
         String[] moyo_list = {"list1", "list2"};
 
-        Log.i("FragmentMyMoyoList", "여기는 마이모여리스트 프래그먼트입니다.");
+        Log.i("FragmentMyMoyoList", "마이모여리스트 프래그먼트입니다.");
 
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(container.getContext(), android.R.layout.simple_list_item_1, moyo_list);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(container.getContext(), android.R.layout.simple_list_item_activated_1, moyo_list);
 
 
         ListView moyoListView = v.findViewById(R.id.moyoListView);

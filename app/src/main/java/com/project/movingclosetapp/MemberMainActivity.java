@@ -40,22 +40,11 @@ import net.daum.mf.map.api.MapView;
 
 public class MemberMainActivity extends AppCompatActivity {
 
-//    MapView mapView;
-//    RelativeLayout mapViewContainer;
-//    FloatingActionButton drawerFab, locationFab;
     FloatingActionButton drawerFab;
     DrawerLayout membermainDrawerLayout;
     NavigationView nav_view;
 
-//    Fragment memberMapFragment;
     FragmentManager fm;
-
-//    MapPoint mapPoint;
-//    LocationManager lm;
-//
-//    Location nowLocation;
-//    public double nowLatitude;
-//    public double nowLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,58 +54,10 @@ public class MemberMainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         MemberDTO memberDTO = (MemberDTO) intent.getSerializableExtra("UserInfo");
 
-//        Toast.makeText(getApplicationContext(), "액티비티 이동 후 " + memberDTO.getName(), Toast.LENGTH_LONG);
-/////////////////////////////////////////////////////////
-//        mapView = new MapView(this);
-//        mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");
-//
-//        mapViewContainer = (RelativeLayout) findViewById(R.id.map_view);
-//        mapViewContainer.addView(mapView);
-/////////////////////////////////////////////////////
-//        mapView.removeAllPOIItems();
-
-//        MapMarker("마커에 찍을 내용", location_detail, 경도, 위도);
-//        MapMarker("마커에 찍을 내용", location_detail, 경도, 위도);
-//        Handler mHandler = new Handler();
-//        mHandler.postDelayed( new Runnable()
-//            {
-//                public void run() {
-//                    //3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-//                    mapView.setCurrentLocationTrackingMode(
-//                    MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading );
-//                }
-//            }, 4000 );
-//        // 1000 = 1초
-
-//////////////////////////////////////////////
-//        lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//
-//        if(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-//            try {
-//
-//                nowLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                nowLatitude = nowLocation.getLatitude();
-//                nowLongitude = nowLocation.getLongitude();
-//
-//                mapPoint = MapPoint.mapPointWithGeoCoord(nowLatitude, nowLongitude);
-//                mapView.setMapCenterPoint(mapPoint, true);
-//            }
-//            catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        else {
-//            Toast.makeText(this, "위치 권한을 허용해주세요.",
-//                    Toast.LENGTH_LONG).show();
-//        }
-//////////////////////////////////////////////
-
-
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.memberMainFragment, new MemberMap());
         fragmentTransaction.commit();
-
 
         drawerFab = findViewById(R.id.drawerFab);
         membermainDrawerLayout = findViewById(R.id.membermainDrawerLayout);
@@ -203,7 +144,7 @@ public class MemberMainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_mymoyo:
-//                    membermainDrawerLayout.closeDrawer(GravityCompat.END);
+                    membermainDrawerLayout.closeDrawer(GravityCompat.START);
                     fm = getSupportFragmentManager();
                     FragmentTransaction ft_mymoyo = fm.beginTransaction();
                     ft_mymoyo.replace(R.id.memberMainFragment, new MyMoyoList());
@@ -211,6 +152,7 @@ public class MemberMainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_viewMap:
+                    membermainDrawerLayout.closeDrawer(GravityCompat.START);
                     fm = getSupportFragmentManager();
                     FragmentTransaction ft_viewmap = fm.beginTransaction();
                     ft_viewmap.replace(R.id.memberMainFragment, new MemberMap());
@@ -225,7 +167,7 @@ public class MemberMainActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         if(membermainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            membermainDrawerLayout.closeDrawer(GravityCompat.END);
+            membermainDrawerLayout.closeDrawer(GravityCompat.START);
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(MemberMainActivity.this);

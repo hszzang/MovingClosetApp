@@ -52,7 +52,7 @@ public class MemberMap extends Fragment {
         mapViewContainer = v.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
 
-        Log.i("FragmentMemberMap", "여기는 멤버 맵 프래그먼트입니다.");
+        Log.i("FragmentMemberMap", "멤버 맵 프래그먼트입니다.");
 
         lm = (LocationManager) container.getContext().getSystemService(Context.LOCATION_SERVICE);
 
