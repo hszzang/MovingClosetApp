@@ -14,6 +14,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,24 +31,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.movingclosetapp.memberfragments.MemberMap;
+import com.project.movingclosetapp.memberfragments.MyMoyoList;
+
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 public class MemberMainActivity extends AppCompatActivity {
 
-    MapView mapView;
-    RelativeLayout mapViewContainer;
-    FloatingActionButton drawerFab, locationFab;
+//    MapView mapView;
+//    RelativeLayout mapViewContainer;
+//    FloatingActionButton drawerFab, locationFab;
+    FloatingActionButton drawerFab;
     DrawerLayout membermainDrawerLayout;
     NavigationView nav_view;
 
-    MapPoint mapPoint;
-    LocationManager lm;
+//    Fragment memberMapFragment;
+    FragmentManager fm;
 
-    Location nowLocation;
-    public double nowLatitude;
-    public double nowLongitude;
+//    MapPoint mapPoint;
+//    LocationManager lm;
+//
+//    Location nowLocation;
+//    public double nowLatitude;
+//    public double nowLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +65,14 @@ public class MemberMainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         MemberDTO memberDTO = (MemberDTO) intent.getSerializableExtra("UserInfo");
 
-        Toast.makeText(getApplicationContext(), "액티비티 이동 후 " + memberDTO.getName(), Toast.LENGTH_LONG);
-
-        mapView = new MapView(this);
-        mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");
-
-        mapViewContainer = (RelativeLayout) findViewById(R.id.map_view);
-        mapViewContainer.addView(mapView);
-
+//        Toast.makeText(getApplicationContext(), "액티비티 이동 후 " + memberDTO.getName(), Toast.LENGTH_LONG);
+/////////////////////////////////////////////////////////
+//        mapView = new MapView(this);
+//        mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");
+//
+//        mapViewContainer = (RelativeLayout) findViewById(R.id.map_view);
+//        mapViewContainer.addView(mapView);
+/////////////////////////////////////////////////////
 //        mapView.removeAllPOIItems();
 
 //        MapMarker("마커에 찍을 내용", location_detail, 경도, 위도);
@@ -77,27 +87,35 @@ public class MemberMainActivity extends AppCompatActivity {
 //                }
 //            }, 4000 );
 //        // 1000 = 1초
-        lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-        if(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            try {
+//////////////////////////////////////////////
+//        lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//
+//        if(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+//            try {
+//
+//                nowLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                nowLatitude = nowLocation.getLatitude();
+//                nowLongitude = nowLocation.getLongitude();
+//
+//                mapPoint = MapPoint.mapPointWithGeoCoord(nowLatitude, nowLongitude);
+//                mapView.setMapCenterPoint(mapPoint, true);
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else {
+//            Toast.makeText(this, "위치 권한을 허용해주세요.",
+//                    Toast.LENGTH_LONG).show();
+//        }
+//////////////////////////////////////////////
 
-                nowLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                nowLatitude = nowLocation.getLatitude();
-                nowLongitude = nowLocation.getLongitude();
 
-                mapPoint = MapPoint.mapPointWithGeoCoord(nowLatitude, nowLongitude);
-                mapView.setMapCenterPoint(mapPoint, true);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Toast.makeText(this, "위치 권한을 허용해주세요.",
-                    Toast.LENGTH_LONG).show();
-        }
-
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.memberMainFragment, new MemberMap());
+        fragmentTransaction.commit();
 
 
         drawerFab = findViewById(R.id.drawerFab);
@@ -182,12 +200,59 @@ public class MemberMainActivity extends AppCompatActivity {
 
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                    break;
+
+                case R.id.nav_mymoyo:
+//                    membermainDrawerLayout.closeDrawer(GravityCompat.END);
+                    fm = getSupportFragmentManager();
+                    FragmentTransaction ft_mymoyo = fm.beginTransaction();
+                    ft_mymoyo.replace(R.id.memberMainFragment, new MyMoyoList());
+                    ft_mymoyo.commit();
+                    break;
+
+                case R.id.nav_viewMap:
+                    fm = getSupportFragmentManager();
+                    FragmentTransaction ft_viewmap = fm.beginTransaction();
+                    ft_viewmap.replace(R.id.memberMainFragment, new MemberMap());
+                    ft_viewmap.commit();
+                    break;
             }
             return false;
         }
     };
 
+    @Override
+    public void onBackPressed() {
+
+        if(membermainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            membermainDrawerLayout.closeDrawer(GravityCompat.END);
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MemberMainActivity.this);
+
+            builder.setTitle("Moving Closet").setMessage("앱을 종료하시겠어요?");
+
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    ActivityCompat.finishAffinity(MemberMainActivity.this);
+                    System.exit(0);
+                }
+            });
+
+            builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int id)
+                { }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        }
 
 
-
+//        super.onBackPressed();
+    }
 }

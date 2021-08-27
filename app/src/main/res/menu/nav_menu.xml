@@ -3,6 +3,15 @@
 
     <group android:checkableBehavior="single">
 
+
+        <item
+            android:id="@+id/nav_viewMap"
+            android:title="지도에서 모여찾기"
+            />
+        <item
+            android:id="@+id/nav_mymoyo"
+            android:title="내 모여버스 목록"
+            />
         <item
             android:id="@+id/nav_logout"
             android:title="로그아웃"

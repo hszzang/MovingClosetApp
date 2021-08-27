@@ -44,6 +44,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public static String IP_ADDRESS = "172.30.1.44";
+
     Button btnMember, btnBus, btnLogin;
     EditText memId, memPass;
     MemberDTO memberDTO = new MemberDTO();
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                 new AsyncHttpServer().execute(
                         //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
-                        "http://192.168.219.116:8081/movingcloset/android/AndLogin.do",
+                        "http://"+ IP_ADDRESS +":8081/movingcloset/android/AndLogin.do",
                                 "userid=" + memId.getText().toString(),
                                 "userpass=" + memPass.getText().toString()
                 );
