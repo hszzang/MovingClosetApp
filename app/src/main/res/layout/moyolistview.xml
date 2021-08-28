@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="20dp"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <TextView
+        android:id="@+id/listview_moyoName"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="모여제목이올자리입니다"
+        android:textSize="9pt"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/listview_moyoAddr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="서울특별시 금천구 시흥대로149가길 32"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:paddingVertical="5dp"
+        android:textSize="7pt"
+        />
+
+    <TextView
+        android:id="@+id/listview_moyoStartEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2020-00-00 부터 2020-00-00 까지 모여"
+        android:textColor="@color/black"
+        android:paddingVertical="5dp"
+        android:textSize="7pt"
+        />
+
+    <TextView
+        android:id="@+id/listview_moyoDday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="모일날짜 2020-00-00"
+        android:textColor="@color/black"
+        android:paddingVertical="5dp"
+        android:textSize="7pt"
+        />
+
+    <Button
+        android:id="@+id/listview_moyoStatus"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:background="@color/maincolor"
+        android:textColor="@color/white"
+        android:text="진행중"
+        android:textSize="7.5pt"
+        />
+
+</LinearLayout>

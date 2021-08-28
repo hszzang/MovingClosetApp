@@ -1,42 +1,27 @@
 package com.project.movingclosetapp;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.movingclosetapp.memberfragments.MemberMap;
 import com.project.movingclosetapp.memberfragments.MyMoyoList;
-
-import net.daum.mf.map.api.MapPOIItem;
-import net.daum.mf.map.api.MapPoint;
-import net.daum.mf.map.api.MapView;
+import com.project.movingclosetapp.models.MemberDTO;
 
 public class MemberMainActivity extends AppCompatActivity {
 
@@ -46,13 +31,15 @@ public class MemberMainActivity extends AppCompatActivity {
 
     FragmentManager fm;
 
+    MemberDTO memberDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_main);
 
         Intent intent = getIntent();
-        MemberDTO memberDTO = (MemberDTO) intent.getSerializableExtra("UserInfo");
+        memberDTO = (MemberDTO) intent.getSerializableExtra("UserInfo");
 
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -145,9 +132,15 @@ public class MemberMainActivity extends AppCompatActivity {
 
                 case R.id.nav_mymoyo:
                     membermainDrawerLayout.closeDrawer(GravityCompat.START);
+
+                    Bundle argsMyMoyoList = new Bundle();
+                    argsMyMoyoList.putString("userid", memberDTO.getUserid());
+                    MyMoyoList mml = new MyMoyoList();
+                    mml.setArguments(argsMyMoyoList);
+
                     fm = getSupportFragmentManager();
                     FragmentTransaction ft_mymoyo = fm.beginTransaction();
-                    ft_mymoyo.replace(R.id.memberMainFragment, new MyMoyoList());
+                    ft_mymoyo.replace(R.id.memberMainFragment, mml);
                     ft_mymoyo.commit();
                     break;
 

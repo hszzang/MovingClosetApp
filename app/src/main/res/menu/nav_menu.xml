@@ -6,18 +6,22 @@
 
         <item
             android:id="@+id/nav_viewMap"
+            android:icon="@drawable/markericon"
             android:title="지도에서 모여찾기"
             />
         <item
             android:id="@+id/nav_mymoyo"
+            android:icon="@drawable/busicon"
             android:title="내 모여버스 목록"
             />
         <item
             android:id="@+id/nav_logout"
+            android:icon="@drawable/logouticon"
             android:title="로그아웃"
             />
         <item
             android:id="@+id/nav_notice"
+            android:icon="@drawable/noticeicon"
             android:title="공지사항"
             />
 

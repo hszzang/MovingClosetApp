@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.project.movingclosetapp.MemberMainActivity;
 import com.project.movingclosetapp.R;
 
 import net.daum.mf.map.api.MapPoint;
@@ -27,14 +25,14 @@ import net.daum.mf.map.api.MapView;
 public class MemberMap extends Fragment {
 
 
-    MapView mapView;
-    RelativeLayout mapViewContainer;
+    private MapView mapView;
+    private RelativeLayout mapViewContainer;
     FloatingActionButton locationFab;
 
-    MapPoint mapPoint;
-    LocationManager lm;
+    private MapPoint mapPoint;
+    private LocationManager lm;
 
-    Location nowLocation;
+    public Location nowLocation;
     public double nowLatitude;
     public double nowLongitude;
 
@@ -45,7 +43,7 @@ public class MemberMap extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
 
-        v = inflater.inflate(R.layout.activity_member_map, container, false);
+        v = inflater.inflate(R.layout.member_map, container, false);
         mapView = new MapView(container.getContext());
         mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");
 

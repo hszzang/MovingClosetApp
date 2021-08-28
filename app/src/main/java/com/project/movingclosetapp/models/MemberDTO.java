@@ -1,4 +1,4 @@
-package com.project.movingclosetapp;
+package com.project.movingclosetapp.models;
 
 import java.io.Serializable;
 
@@ -15,6 +15,20 @@ public class MemberDTO implements Serializable {
     private String name ;
     private String birth ;
     private String regidate;
+
+    public MemberDTO() {}
+    public MemberDTO(String userid, String userpass, String email, String phone, String tag, String postcode, String addr, String name, String birth, String regidate) {
+        this.userid = userid;
+        this.userpass = userpass;
+        this.email = email;
+        this.phone = phone;
+        this.tag = tag;
+        this.postcode = postcode;
+        this.addr = addr;
+        this.name = name;
+        this.birth = birth;
+        this.regidate = regidate;
+    }
 
     public String getUserid() {
         return userid;
