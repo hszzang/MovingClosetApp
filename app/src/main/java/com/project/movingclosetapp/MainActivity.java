@@ -29,8 +29,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    public static String IP_ADDRESS = "192.168.18.220";
+    public static String IP_ADDRESS = "172.30.1.34";
 
     Button btnMember, btnBus, btnLogin;
     EditText memId, memPass;

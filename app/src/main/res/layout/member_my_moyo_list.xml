@@ -9,7 +9,7 @@
         android:id="@+id/countMyMoyo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="신청한 모여가 n개 있습니다"
+        android:text="내 모여 신청 목록"
         android:gravity="right"
         android:paddingRight="30dp"
         android:textSize="10pt"

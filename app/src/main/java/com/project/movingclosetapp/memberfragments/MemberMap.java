@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -17,8 +19,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.project.movingclosetapp.MemberMainActivity;
 import com.project.movingclosetapp.R;
 
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
@@ -30,11 +34,6 @@ public class MemberMap extends Fragment {
     FloatingActionButton locationFab;
 
     private MapPoint mapPoint;
-    private LocationManager lm;
-
-    public Location nowLocation;
-    public double nowLatitude;
-    public double nowLongitude;
 
     private View v;
 
@@ -52,28 +51,54 @@ public class MemberMap extends Fragment {
 
         Log.i("FragmentMemberMap", "멤버 맵 프래그먼트입니다.");
 
-        lm = (LocationManager) container.getContext().getSystemService(Context.LOCATION_SERVICE);
 
-        if(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(container.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-            try {
+        final Handler my_location_handler = new Handler();
+        final LocationManager lm = (LocationManager) container.getContext().getSystemService(Context.LOCATION_SERVICE);
 
-                nowLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                nowLatitude = nowLocation.getLatitude();
-                nowLongitude = nowLocation.getLongitude();
+        my_location_handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(ContextCompat.checkSelfPermission(container.getContext().getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                mapPoint = MapPoint.mapPointWithGeoCoord(nowLatitude, nowLongitude);
-                mapView.setMapCenterPoint(mapPoint, true);
+                    ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+                }
+                else {
+                    Log.i("FindLocation", "현재위치 찾기 시작");
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if(location == null) {
+                        location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if(location != null) {
+                        double nowLatitude = location.getLatitude();
+                        double nowLongitude = location.getLongitude();
+                        mapPoint = MapPoint.mapPointWithGeoCoord(nowLatitude, nowLongitude);
+                        mapView.setMapCenterPoint(mapPoint, true);
+
+                        MapPOIItem marker = new MapPOIItem();
+                        marker.setItemName("현재 위치");
+                        marker.setTag(0);
+                        marker.setMapPoint(mapPoint);
+                        marker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+
+                        mapView.addPOIItem(marker);
+                    }
+                    else {
+                        Log.i("FindLocation", "현재위치 찾기 실패, 재검색합니다");
+                        my_location_handler.postDelayed(this, 500);
+                    }
+                }
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Toast.makeText(container.getContext(), "위치 권한을 허용해주세요.",
-                    Toast.LENGTH_LONG).show();
-        }
+        }, 500);
+
+
+
+
 
 
         return v;
     }
+
+
 }

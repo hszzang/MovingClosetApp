@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,8 @@ public class MyMoyoList extends Fragment {
     MoyoListViewAdapter adapter;
     ListView moyoListView;
     TextView countMyMoyo;
+
+    FragmentManager fm;
 
     @Nullable
     @Override
@@ -224,10 +228,17 @@ public class MyMoyoList extends Fragment {
 
             //i는 0부터 시작 !
             Log.i("CheckMoyoListViewClick" , i + "번째 리스트뷰 클릭 - " + moyoList.get(i).toString());
+            Bundle argsthisMoyoInfo = new Bundle();
+            argsthisMoyoInfo.putSerializable("moyoList", moyoList.get(i));
+            argsthisMoyoInfo.putSerializable("moyoUseList", moyoUseList.get(i));
 
+            MyMoyoInfo mmi = new MyMoyoInfo();
+            mmi.setArguments(argsthisMoyoInfo);
 
-
-
+            fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft_mymoyoinfo = fm.beginTransaction();
+            ft_mymoyoinfo.add(R.id.memberMainFragment, mmi);
+            ft_mymoyoinfo.commit();
         }
     };
 

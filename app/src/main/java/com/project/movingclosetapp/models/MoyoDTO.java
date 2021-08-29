@@ -1,6 +1,8 @@
 package com.project.movingclosetapp.models;
 
-public class MoyoDTO {
+import java.io.Serializable;
+
+public class MoyoDTO implements Serializable {
 
     private String m_idx;
     private String m_name;

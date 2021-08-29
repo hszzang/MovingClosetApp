@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovingClosetApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".memberfragments.MemberMap"></activity>
-        <activity android:name=".memberfragments.MyMoyoList" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

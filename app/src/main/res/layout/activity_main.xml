@@ -11,7 +11,7 @@
         android:src="@drawable/movingclosetlogoblack" />
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="50dp">
 
         <Button
@@ -34,7 +34,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="350dp"
         android:orientation="vertical"
         android:gravity="center"
@@ -42,7 +42,7 @@
 
         <EditText
             android:id="@+id/memId"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:inputType="text"
             android:hint="ID"
@@ -50,7 +50,7 @@
             />
         <EditText
             android:id="@+id/memPass"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:inputType="textPassword"
             android:hint="PASSWORD"
@@ -58,7 +58,7 @@
             />
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="로그인"
             android:background="@color/accentcolor"
