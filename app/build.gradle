@@ -46,4 +46,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/libDaumMapAndroid.jar')
+    implementation 'com.github.clans:fab:1.6.4'
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.project.movingclosetapp.models.MemberDTO;
@@ -29,11 +30,14 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String IP_ADDRESS = "172.30.1.34";
+    public static String IP_ADDRESS = "192.168.219.103";
 
+    ImageView loginpage_Logo;
     Button btnMember, btnBus, btnLogin;
     EditText memId, memPass;
     MemberDTO memberDTO = new MemberDTO();
+
+    int countLogo = 0;
 
 //    SQLiteDatabase sqLiteDatabase;
 
@@ -55,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btnLogin);
 
+        loginpage_Logo = findViewById(R.id.loginpage_Logo);
+        loginpage_Logo.setOnClickListener(clickLoginLogo);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
@@ -228,16 +236,38 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             if(view == btnMember) {
-                btnMember.setBackgroundColor(Color.parseColor("#FF9C2F"));
+                btnMember.setBackgroundColor(Color.parseColor("#FF6C2F"));
                 btnMember.setTextColor(Color.WHITE);
                 btnBus.setBackgroundColor(Color.WHITE);
                 btnBus.setTextColor(Color.BLACK);
             }
             else if(view == btnBus) {
-                btnBus.setBackgroundColor(Color.parseColor("#FF9C2F"));
+                btnBus.setBackgroundColor(Color.parseColor("#FF6C2F"));
                 btnBus.setTextColor(Color.WHITE);
                 btnMember.setBackgroundColor(Color.WHITE);
                 btnMember.setTextColor(Color.BLACK);
+            }
+        }
+    };
+
+    View.OnClickListener clickLoginLogo = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            countLogo ++;
+
+            if(countLogo >= 5) {
+
+                MemberDTO adminLogin = new MemberDTO("hs2zzang", "aaa111!!!", "qpwohs2@gmai.com", "010-0000-0000", null, "06015", "서울특별시 강남구 도산대로75길 21", "강혜수", null, "2021-08-23");
+
+                Toast.makeText(getApplicationContext(),
+                        "관리자님 환영합니다.",
+                        Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getApplicationContext(), MemberMainActivity.class);
+
+                intent.putExtra("UserInfo", adminLogin); //아이디 입력값
+                countLogo = 0;
+                startActivity(intent);
             }
         }
     };

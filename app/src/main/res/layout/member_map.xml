@@ -1,23 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/map_view"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/locationFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/maincolor"
-        android:elevation="20dp"
-        android:src="@drawable/nowlocation"
-        android:clickable="true"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        >
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
-</RelativeLayout>
+    <!--    <android.support.design.widget.FloatingActionButton-->
+    <!--        android:id="@+id/locationFab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_alignParentRight="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginEnd="25dp"-->
+    <!--        android:layout_marginRight="25dp"-->
+    <!--        android:layout_marginBottom="40dp"-->
+    <!--        android:backgroundTint="@color/maincolor"-->
+    <!--        android:elevation="20dp"-->
+    <!--        android:src="@drawable/nowlocation"-->
+    <!--        android:clickable="true"-->
+    <!--        />-->
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:menu_openDirection="up"
+            app:menu_showShadow="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            app:menu_colorNormal="@color/white"
+            app:menu_colorPressed="@color/accentcolor"
+            app:menu_icon="@drawable/markericon"
+            >
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/member_homeLoca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/homeicon"
+                app:fab_colorNormal="@color/maincolor"
+                app:fab_label="우리집 주변에서 보기"
+                app:fab_size="mini"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/member_nowLoca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/nowlocation"
+                app:fab_colorNormal="@color/maincolor"
+                app:fab_label="현재 위치에서 보기"
+                app:fab_size="mini"
+                />
+        </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/member_moyoList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1.7"
+        >
+
+        <ListView
+            android:id="@+id/member_moyoListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

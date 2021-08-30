@@ -187,7 +187,6 @@ public class MyMoyoList extends Fragment {
                         );
 
                         moyoUseList.add(moyoUseDTO);
-
                     }
                 }
                 else {
@@ -203,8 +202,7 @@ public class MyMoyoList extends Fragment {
 
                 String startdate = m.getM_start().substring(0, 10);
                 String enddate = m.getM_end().substring(0, 10);
-                String ddaydate = m.getM_dday().substring(0,    10);
-
+                String ddaydate = m.getM_dday().substring(0, 10);
 
                 adapter.addItem(m.getM_name(), m.getM_addr(),
                         startdate + " 부터 " + enddate + " 까지 모여!",
@@ -237,7 +235,8 @@ public class MyMoyoList extends Fragment {
 
             fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft_mymoyoinfo = fm.beginTransaction();
-            ft_mymoyoinfo.add(R.id.memberMainFragment, mmi);
+            ft_mymoyoinfo.replace(R.id.memberMainFragment, mmi);
+            ft_mymoyoinfo.addToBackStack(null);
             ft_mymoyoinfo.commit();
         }
     };

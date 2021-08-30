@@ -41,9 +41,14 @@ public class MemberMainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         memberDTO = (MemberDTO) intent.getSerializableExtra("UserInfo");
 
+        Bundle argsMemberMap = new Bundle();
+        argsMemberMap.putSerializable("loginMemberInfo", memberDTO);
+        MemberMap memberMap = new MemberMap();
+        memberMap.setArguments(argsMemberMap);
+
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.memberMainFragment, new MemberMap());
+        fragmentTransaction.add(R.id.memberMainFragment, memberMap);
         fragmentTransaction.commit();
 
         drawerFab = findViewById(R.id.drawerFab);
@@ -141,6 +146,7 @@ public class MemberMainActivity extends AppCompatActivity {
                     fm = getSupportFragmentManager();
                     FragmentTransaction ft_mymoyo = fm.beginTransaction();
                     ft_mymoyo.replace(R.id.memberMainFragment, mml);
+                    ft_mymoyo.addToBackStack(null);
                     ft_mymoyo.commit();
                     break;
 
@@ -149,6 +155,7 @@ public class MemberMainActivity extends AppCompatActivity {
                     fm = getSupportFragmentManager();
                     FragmentTransaction ft_viewmap = fm.beginTransaction();
                     ft_viewmap.replace(R.id.memberMainFragment, new MemberMap());
+                    ft_viewmap.addToBackStack(null);
                     ft_viewmap.commit();
                     break;
             }
@@ -161,6 +168,9 @@ public class MemberMainActivity extends AppCompatActivity {
 
         if(membermainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             membermainDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            super.onBackPressed();
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(MemberMainActivity.this);
