@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.project.movingclosetapp.models.MemberDTO;
+import com.project.movingclosetapp.models.MoyoBusDTO;
+import com.project.movingclosetapp.models.MoyoDTO;
 
 import org.json.JSONObject;
 
@@ -30,16 +32,17 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String IP_ADDRESS = "192.168.219.103";
+    public static String IP_ADDRESS = "172.30.1.33";
 
     ImageView loginpage_Logo;
     Button btnMember, btnBus, btnLogin;
     EditText memId, memPass;
     MemberDTO memberDTO = new MemberDTO();
+    MoyoBusDTO moyoBusDTO = new MoyoBusDTO();
+    MoyoDTO moyoDTO = new MoyoDTO();
 
+    String loginCate;
     int countLogo = 0;
-
-//    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         memId = findViewById(R.id.memId);
         memPass = findViewById(R.id.memPass);
 
+        loginCate = "member";
         btnMember.setOnClickListener(clickGroupListener);
         btnBus.setOnClickListener(clickGroupListener);
 
@@ -72,14 +76,11 @@ public class MainActivity extends AppCompatActivity {
                         //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
                         "http://"+ IP_ADDRESS +":8081/movingcloset/android/AndLogin.do",
                                 "userid=" + memId.getText().toString(),
-                                "userpass=" + memPass.getText().toString()
+                                "userpass=" + memPass.getText().toString(),
+                                "logincate=" + loginCate
                 );
-
-
             }
         });
-
-
     }
 
     class AsyncHttpServer extends AsyncTask<String, Void, String> {
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                 out.write(strings[1].getBytes()); //파라미터2 : 아이디
                 out.write("&".getBytes()); //&를 사용하여 쿼리스트링 형태로 만들어준다.
                 out.write(strings[2].getBytes()); //파라미터3 : 패스워드
+                out.write("&".getBytes()); //&를 사용하여 쿼리스트링 형태로 만들어준다.
+                out.write(strings[3].getBytes()); //파라미터3 : 로그인 분류
                 out.flush();
                 out.close();
 
@@ -147,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-
             try {
                 /*
                 {
@@ -172,23 +174,34 @@ public class MainActivity extends AppCompatActivity {
                 int success = Integer.parseInt(jsonObject.getString("isLogin"));
                 Log.i("MemberLogin", "success: " + success);
 
-
                 if(success == 1) {
                     Log.i("MemberLogin", "로그인 성공");
 
-                    //객체 안에 회원정보를 저장한 또 하나의 JSON객체가 있으므로 파싱
-                    memberDTO.setUserid(jsonObject.getJSONObject("memberDTO").getString("userid"));
-                    memberDTO.setUserpass(jsonObject.getJSONObject("memberDTO").getString("userpass"));
-                    memberDTO.setEmail(jsonObject.getJSONObject("memberDTO").getString("email"));
-                    memberDTO.setPhone(jsonObject.getJSONObject("memberDTO").getString("phone"));
-                    memberDTO.setPostcode(jsonObject.getJSONObject("memberDTO").getString("postcode"));
-                    memberDTO.setAddr(jsonObject.getJSONObject("memberDTO").getString("addr"));
-                    memberDTO.setName(jsonObject.getJSONObject("memberDTO").getString("name"));
+                    if(loginCate.equals("member")) {
 
-//                    createMyDatabase();
-//                    createMyTable();
-//                    insertLoginMember(memberDTO);
+                        //객체 안에 회원정보를 저장한 또 하나의 JSON객체가 있으므로 파싱
+                        memberDTO.setUserid(jsonObject.getJSONObject("memberDTO").getString("userid"));
+                        memberDTO.setUserpass(jsonObject.getJSONObject("memberDTO").getString("userpass"));
+                        memberDTO.setEmail(jsonObject.getJSONObject("memberDTO").getString("email"));
+                        memberDTO.setPhone(jsonObject.getJSONObject("memberDTO").getString("phone"));
+                        memberDTO.setPostcode(jsonObject.getJSONObject("memberDTO").getString("postcode"));
+                        memberDTO.setAddr(jsonObject.getJSONObject("memberDTO").getString("addr"));
+                        memberDTO.setName(jsonObject.getJSONObject("memberDTO").getString("name"));
+                    }
+                    else if(loginCate.equals("moyobus")) {
 
+                        moyoBusDTO.setM_idx(jsonObject.getJSONObject("moyoBusDTO").getString("m_idx"));
+                        moyoBusDTO.setBusid(jsonObject.getJSONObject("moyoBusDTO").getString("busid"));
+                        moyoBusDTO.setBuspass(jsonObject.getJSONObject("moyoBusDTO").getString("buspass"));
+                        moyoBusDTO.setMb_num(jsonObject.getJSONObject("moyoBusDTO").getString("mb_num"));
+                        moyoBusDTO.setMb_status(jsonObject.getJSONObject("moyoBusDTO").getString("mb_status"));
+
+                        moyoDTO.setM_idx(jsonObject.getJSONObject("moyoDTO").getString("m_idx"));
+                        moyoDTO.setM_addr(jsonObject.getJSONObject("moyoDTO").getString("m_addr"));
+                        moyoDTO.setM_dday(jsonObject.getJSONObject("moyoDTO").getString("m_dday"));
+                        moyoDTO.setM_lat(jsonObject.getJSONObject("moyoDTO").getString("m_lat"));
+                        moyoDTO.setM_lon(jsonObject.getJSONObject("moyoDTO").getString("m_lon"));
+                    }
                 }
                 else {
                     Log.i("MemberLogin", "로그인 실패");
@@ -200,10 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("MemberLogin", "예외 발생");
             }
 
-            //대화창 닫기
-//            dialog.dismiss();
-
-            if(memberDTO.getName() != null) {
+            if(loginCate.equals("member") && memberDTO.getName() != null) {
                 Toast.makeText(getApplicationContext(),
                         memberDTO.getName() + "님 환영합니다.",
                         Toast.LENGTH_LONG).show();
@@ -220,14 +230,39 @@ public class MainActivity extends AppCompatActivity {
                 memPass = findViewById(R.id.memPass);
                 memPass.setText("");
             }
+            else if(loginCate.equals("moyobus") && moyoBusDTO.getMb_num() != null) {
+
+                if(moyoBusDTO.getMb_status().equals("영업종료")) {
+                    Log.i("MemberLogin", "로그인 실패");
+                    Toast.makeText(getApplicationContext(),
+                            "이미 종료된 모여버스입니다.",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),
+                            "버스 로그인되었습니다.",
+                            Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(getApplicationContext(), BusMainActivity.class);
+
+                    //부가데이터를 인텐트에 추가한다.
+                    intent.putExtra("busInfo", moyoBusDTO); //버스 정보
+                    intent.putExtra("moyoInfo", moyoDTO); //모여 정보
+
+                    startActivity(intent);
+
+                    memId = findViewById(R.id.memId);
+                    memId.setText("");
+                    memPass = findViewById(R.id.memPass);
+                    memPass.setText("");
+                }
+            }
             else {
                 Log.i("MemberLogin", "로그인 실패");
                 Toast.makeText(getApplicationContext(),
                         "아이디와 비밀번호를 확인해주세요.",
                         Toast.LENGTH_LONG).show();
             }
-
-
         }
     }
 
@@ -240,12 +275,14 @@ public class MainActivity extends AppCompatActivity {
                 btnMember.setTextColor(Color.WHITE);
                 btnBus.setBackgroundColor(Color.WHITE);
                 btnBus.setTextColor(Color.BLACK);
+                loginCate = "member";
             }
             else if(view == btnBus) {
                 btnBus.setBackgroundColor(Color.parseColor("#FF6C2F"));
                 btnBus.setTextColor(Color.WHITE);
                 btnMember.setBackgroundColor(Color.WHITE);
                 btnMember.setTextColor(Color.BLACK);
+                loginCate = "moyobus";
             }
         }
     };

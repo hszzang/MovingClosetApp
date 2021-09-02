@@ -57,6 +57,10 @@ public class MoyoListViewAdapter extends BaseAdapter {
             moyoStatus.setVisibility(View.INVISIBLE);
         }
 
+        if(moyoStatus.getText().equals("membermap")) {
+            moyoStatus.setVisibility(View.GONE);
+        }
+
         return view;
     }
 

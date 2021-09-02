@@ -382,11 +382,11 @@ public class MemberMap extends Fragment {
 
                 adapter.addItem(m.getM_name(), m.getM_addr(),
                         startdate + " 부터 " + enddate + " 까지 모여!",
-                        "모여DAY : " + ddaydate, "D - " + end_d_day);
+                        "모여DAY : " + ddaydate, "membermap" );
             }
 
             if(moyoDTOList.size() == 0 || moyoDTOList.isEmpty()) {
-                adapter.addItem("신청한 모여가 없습니다.", "모여 신청 후 우리동네에서 쇼핑을 즐기세요!",
+                adapter.addItem("주변에 모여가 없습니다.", "Moving Closet",
                         " ",
                         " " , " ");
             }
