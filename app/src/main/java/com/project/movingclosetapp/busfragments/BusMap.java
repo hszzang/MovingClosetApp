@@ -80,13 +80,13 @@ public class BusMap extends Fragment{
             moyoBusDTO = (MoyoBusDTO) getArguments().getSerializable("loginBusInfo");
             moyoDTO = (MoyoDTO) getArguments().getSerializable("moyoInfo");
         }
-
+//
         moyoMarker = new MapPOIItem();
-        moyoMarker.setItemName("목적지");
-        moyoMarker.setTag(0);
-        moyoMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(
-                Double.parseDouble(moyoDTO.getM_lat()), Double.parseDouble(moyoDTO.getM_lon())));
-        moyoMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+////        moyoMarker.setItemName("목적지");
+//        moyoMarker.setTag(0);
+//        moyoMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(
+//                Double.parseDouble(moyoDTO.getM_lat()), Double.parseDouble(moyoDTO.getM_lon())));
+//        moyoMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
 
         mapView = new MapView(container.getContext());
         mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");

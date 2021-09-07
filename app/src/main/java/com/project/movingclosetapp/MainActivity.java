@@ -32,7 +32,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String IP_ADDRESS = "172.30.1.33";
+    public static String IP_ADDRESS = "192.168.50.216";
 
     ImageView loginpage_Logo;
     Button btnMember, btnBus, btnLogin;

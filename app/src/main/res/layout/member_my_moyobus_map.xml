@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        >
+
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/member_moyoList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="4"
+        >
+
+        <TextView
+            android:id="@+id/bus_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="현 위치"
+            android:textSize="7.5pt"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginVertical="22dp"
+            />
+        <TextView
+            android:id="@+id/bus_nowLocaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="현 위치"
+            android:textSize="9.5pt"
+            android:textColor="@color/black"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

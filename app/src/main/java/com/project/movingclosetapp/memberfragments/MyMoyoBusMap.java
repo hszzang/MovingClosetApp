@@ -1,17 +1,26 @@
 package com.project.movingclosetapp.memberfragments;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +28,11 @@ import android.widget.Toast;
 import com.project.movingclosetapp.R;
 import com.project.movingclosetapp.models.MoyoBusDTO;
 import com.project.movingclosetapp.models.MoyoDTO;
-import com.project.movingclosetapp.models.MoyoUseDTO;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,90 +40,99 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import static com.project.movingclosetapp.MainActivity.IP_ADDRESS;
 
-public class MyMoyoInfo extends Fragment {
-
-    private View v;
+public class MyMoyoBusMap extends Fragment{
 
     private MapView mapView;
     private RelativeLayout mapViewContainer;
+    private TextView bus_number, bus_nowLocaText;
+
     private MapPoint mapPoint;
 
-    private MoyoDTO moyoDTO;
-    private MoyoUseDTO moyoUseDTO;
+    private View v;
     private MoyoBusDTO moyoBusDTO;
 
-    private FloatingActionButton trackingMyMoyoBus;
-
-    FragmentManager fm;
+    private Handler my_location_handler;
+    private MapPOIItem moyoMarker;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.member_my_moyo_info, container, false);
+        v = inflater.inflate(R.layout.member_my_moyobus_map, container, false);
+
         if(getArguments() != null) {
-            moyoDTO = (MoyoDTO)getArguments().getSerializable("moyoList");
-            moyoUseDTO = (MoyoUseDTO)getArguments().getSerializable("moyoUseList");
+            moyoBusDTO = (MoyoBusDTO) getArguments().getSerializable("moyoBusDTO");
         }
 
-        moyoBusDTO = new MoyoBusDTO();
+        moyoMarker = new MapPOIItem();
+        moyoMarker.setItemName("현재 버스 위치");
+        moyoMarker.setTag(0);
+        moyoMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(
+                Double.parseDouble(moyoBusDTO.getMb_lat()), Double.parseDouble(moyoBusDTO.getMb_lon())));
+        moyoMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
 
         mapView = new MapView(container.getContext());
         mapView.setDaumMapApiKey("35d7f6ad978712e086f425ae8ed5753f");
 
-        mapViewContainer = v.findViewById(R.id.mymoyo_map_view);
+        mapViewContainer = v.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
 
-        double moyoLat = Double.parseDouble(moyoDTO.getM_lat());
-        double moyoLon = Double.parseDouble(moyoDTO.getM_lon());
+        bus_number = v.findViewById(R.id.bus_number);
+        bus_nowLocaText = v.findViewById(R.id.bus_nowLocaText);
 
-        mapPoint = MapPoint.mapPointWithGeoCoord(moyoLat, moyoLon);
-        mapView.setMapCenterPoint(mapPoint, true);
+        bus_number.setText(moyoBusDTO.getMb_num());
+        bus_nowLocaText.setText(moyoBusDTO.getMb_addr());
 
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName(moyoDTO.getM_name());
-        marker.setTag(0);
-        marker.setMapPoint(mapPoint);
-        marker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
-
-        mapView.addPOIItem(marker);
-
-        TextView moyoName = v.findViewById(R.id.mymoyoinfo_moyoName);
-        TextView moyoAddr = v.findViewById(R.id.mymoyoinfo_moyoAddr);
-        TextView moyoStart = v.findViewById(R.id.mymoyoinfo_moyoStart);
-        TextView moyoEnd = v.findViewById(R.id.mymoyoinfo_moyoEnd);
-        TextView moyoDday = v.findViewById(R.id.mymoyoinfo_moyoDday);
-        TextView moyoDesc = v.findViewById(R.id.mymoyoinfo_moyoDesc);
-        TextView moyoUseName = v.findViewById(R.id.mymoyoinfo_moyoUseName);
-        TextView moyoUsePhone = v.findViewById(R.id.mymoyoinfo_moyoUsePhone);
-        TextView moyoUseEmail = v.findViewById(R.id.mymoyoinfo_moyoUseEmail);
-        TextView moyoUseTime = v.findViewById(R.id.mymoyoinfo_moyoUseTime);
-        trackingMyMoyoBus = v.findViewById(R.id.trackingMyMoyoBus);
-        trackingMyMoyoBus.setOnClickListener(busBtnListener);
-
-        moyoName.setText(moyoDTO.getM_name());
-        moyoAddr.setText(moyoDTO.getM_addr());
-        moyoStart.setText(moyoDTO.getM_start().substring(0, 10));
-        moyoEnd.setText(moyoDTO.getM_end().substring(0, 10));
-        moyoDday.setText(moyoDTO.getM_dday().substring(0, 10));
-        moyoDesc.setText(moyoDTO.getM_desc());
-        moyoUseName.setText(moyoUseDTO.getMu_name());
-        moyoUsePhone.setText(moyoUseDTO.getMu_phone());
-        moyoUseEmail.setText(moyoUseDTO.getMu_email());
-        moyoUseTime.setText(moyoUseDTO.getMu_time());
-
-        new AsyncHttpServer().execute(
-                //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
-                "http://"+ IP_ADDRESS +":8081/movingcloset/android/AndMyBusLoca.do",
-                "m_idx=" + moyoDTO.getM_idx()
-        );
-
+        my_location_handler = new Handler();
+        my_location_handler.postDelayed(nowLocationRunnable, 500);
 
         return v;
     }
+
+    public void setMapCenterLocation (double latitude, double longitude) {
+
+        mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+        mapView.setMapCenterPoint(mapPoint, true);
+
+        mapView.removeAllPOIItems();
+        MapPOIItem marker = new MapPOIItem();
+        marker.setItemName("현재 버스 위치");
+        marker.setTag(0);
+        marker.setMapPoint(mapPoint);
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+
+        mapView.addPOIItem(marker);
+        mapView.addPOIItem(moyoMarker);
+        final Geocoder geocoder = new Geocoder(getContext());
+
+        try {
+            List<Address> resultList = geocoder.getFromLocation(
+                    latitude, longitude, 1
+            );
+            bus_nowLocaText.setText(resultList.get(0).getAddressLine(0).substring(5));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        my_location_handler.postDelayed(nowLocationRunnable, 7000);
+    }
+
+    Runnable nowLocationRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            new AsyncHttpServer().execute(
+                    //현재 접속된 wifi의 ipv4 주소로 변경해줘야 합니다.
+                    "http://"+ IP_ADDRESS +":8081/movingcloset/android/AndMyBusLoca.do",
+                    "m_idx=" + moyoBusDTO.getM_idx()
+            );
+        }
+    };
 
     class AsyncHttpServer extends AsyncTask<String, Void, String> {
 
@@ -213,30 +229,11 @@ public class MyMoyoInfo extends Fragment {
                 Log.i("MyMoyoList", "예외 발생");
             }
 
+            bus_number.setText(moyoBusDTO.getMb_num());
+            bus_nowLocaText.setText(moyoBusDTO.getMb_addr());
+
+            setMapCenterLocation(Double.parseDouble(moyoBusDTO.getMb_lat()), Double.parseDouble(moyoBusDTO.getMb_lon()));
         }
     }
 
-    View.OnClickListener busBtnListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            if(moyoBusDTO.getMb_lat() == null || moyoBusDTO.getMb_lat() == "") {
-                Toast.makeText(getContext(), "아직 버스가 배정되지 않았습니다.", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Bundle argsMoyoBus = new Bundle();
-                argsMoyoBus.putSerializable("moyoBusDTO", moyoBusDTO);
-
-                MyMoyoBusMap mmbm = new MyMoyoBusMap();
-                mmbm.setArguments(argsMoyoBus);
-
-                fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft_mymoyobus = fm.beginTransaction();
-                ft_mymoyobus.replace(R.id.memberMainFragment, mmbm);
-                ft_mymoyobus.addToBackStack(null);
-                ft_mymoyobus.commit();
-
-            }
-        }
-    };
 }
