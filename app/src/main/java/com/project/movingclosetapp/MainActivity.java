@@ -32,7 +32,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String IP_ADDRESS = "192.168.50.216";
+    // 현재 접속 중인 IP주소를 입력해주세요. ASYNCTASK를 위해 필요합니다.
+    public static String IP_ADDRESS = "HERE IN YOUR IP ADDRESS";
 
     ImageView loginpage_Logo;
     Button btnMember, btnBus, btnLogin;
